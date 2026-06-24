@@ -19,4 +19,8 @@ def interpolation_search(arr,target):
         else:
             high=pos-1
     return -1
-print(interpolation_search([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],14))
+
+#example entities:
+arr=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+target=13
+print(interpolation_search(arr,target))
