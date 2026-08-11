@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Document Search</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="header-text">
+      <h1>Smart Document Search</h1>
+      <p>Algorithm-powered text search and analysis</p>
+    </div>
+    <div class="status" id="statusIndicator">
+      <span class="status-dot"></span>
+      <span id="statusText">Ready</span>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <!-- ===== Left column ===== -->
+    <div class="col col-main">
+
+      <!-- Document card -->
+      <section class="card">
+        <div class="card-header">
+          <h2>Document</h2>
+          <div class="card-header-actions">
+            <select id="sampleSelect" class="select select-sm">
+              <option value="">Sample document…</option>
+              <option value="ml">Machine Learning</option>
+              <option value="space">Space Exploration</option>
+              <option value="net">Computer Networks</option>
+            </select>
+          </div>
+        </div>
+
+        <textarea id="docInput" class="textarea" placeholder="Paste or type a document here, or load a sample…" spellcheck="false"></textarea>
+
+        <div class="doc-toolbar">
+          <div class="doc-toolbar-buttons">
+            <button class="btn btn-secondary" id="loadSampleBtn">Load Sample</button>
+            <label class="btn btn-secondary file-btn">
+              Upload .txt
+              <input type="file" id="fileInput" accept=".txt" hidden>
+            </label>
+            <button class="btn btn-ghost" id="clearBtn">Clear</button>
+          </div>
+          <div class="doc-stats">
+            <span><strong id="charCount">0</strong> characters</span>
+            <span class="dot-sep">·</span>
+            <span><strong id="wordCount">0</strong> words</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Search card -->
+      <section class="card">
+        <div class="card-header">
+          <h2>Search</h2>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="searchInput">Search Query</label>
+            <input type="text" id="searchInput" class="input" placeholder="e.g. machine learning" autocomplete="off">
+          </div>
+
+          <div class="field field-narrow">
+            <label for="algoSelect">Algorithm</label>
+            <select id="algoSelect" class="select">
+              <option value="compare" selected>Compare All</option>
+              <option value="naive">Naive Search</option>
+              <option value="kmp">KMP</option>
+              <option value="rabinkarp">Rabin-Karp</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-bottom">
+          <label class="checkbox">
+            <input type="checkbox" id="caseSensitive">
+            <span>Case sensitive</span>
+          </label>
+
+          <div class="search-actions">
+            <button class="btn btn-ghost" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="searchBtn" disabled>Search <span class="kbd">Ctrl+Enter</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section class="card" id="resultsCard">
+        <div class="card-header">
+          <h2>Search Results</h2>
+        </div>
+        <div id="resultsBody">
+          <div class="empty-state">
+            Enter a document and a search query, then press <strong>Search</strong> to see results here.
+          </div>
+        </div>
+      </section>
+
+      <!-- Highlighted document -->
+      <section class="card" id="highlightCard" hidden>
+        <div class="card-header">
+          <h2>Document — Matches Highlighted</h2>
+        </div>
+        <div class="highlight-panel" id="highlightPanel"></div>
+      </section>
+
+      <!-- Visualization -->
+      <section class="card">
+        <div class="card-header">
+          <h2>Algorithm Visualization</h2>
+          <div class="card-header-actions">
+            <select id="vizAlgoSelect" class="select select-sm">
+              <option value="naive">Naive Search</option>
+              <option value="kmp">KMP</option>
+              <option value="rabinkarp">Rabin-Karp</option>
+            </select>
+            <button class="btn btn-secondary" id="visualizeBtn">Visualize</button>
+          </div>
+        </div>
+
+        <div id="vizBody">
+          <div class="empty-state">
+            Run a search first, then press <strong>Visualize</strong> to watch the algorithm compare the pattern against the text step by step.
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ===== Right column ===== -->
+    <div class="col col-side">
+
+      <!-- Complexity table -->
+      <section class="card">
+        <div class="card-header">
+          <h2>Complexity Comparison</h2>
+        </div>
+        <table class="complexity-table">
+          <thead>
+            <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Naive</td><td>O(n)</td><td>O(nm)</td><td>O(nm)</td></tr>
+            <tr><td>KMP</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
+            <tr><td>Rabin-Karp</td><td>O(n+m)</td><td>O(n+m)</td><td>O(nm)</td></tr>
+          </tbody>
+        </table>
+        <p class="note">n = document length, m = pattern length. Rabin-Karp's average case assumes few hash collisions; every collision needs a character-by-character check, which can push the worst case to O(nm).</p>
+      </section>
+
+      <!-- About algorithms (collapsible) -->
+      <section class="card">
+        <div class="card-header">
+          <h2>About the Algorithms</h2>
+        </div>
+
+        <details class="info-block" open>
+          <summary>Naive Search</summary>
+          <p>Slides the pattern over the text one position at a time and checks, character by character, whether it matches at that position. Simple to write, but repeats comparisons when text has similar substrings.</p>
+          <ul>
+            <li><strong>Time:</strong> O(n·m) worst case</li>
+            <li><strong>Space:</strong> O(1)</li>
+          </ul>
+        </details>
+
+        <details class="info-block">
+          <summary>KMP (Knuth–Morris–Pratt)</summary>
+          <p>Pre-processes the pattern into an LPS array (Longest Prefix that is also a Suffix). When a mismatch happens, the LPS array tells the algorithm how far it can safely skip ahead instead of restarting from scratch.</p>
+          <ul>
+            <li><strong>LPS array:</strong> for each prefix of the pattern, stores the length of the longest proper prefix that's also a suffix</li>
+            <li><strong>Time:</strong> O(n + m)</li>
+            <li><strong>Space:</strong> O(m) for the LPS array</li>
+          </ul>
+        </details>
+
+        <details class="info-block">
+          <summary>Rabin-Karp</summary>
+          <p>Computes a hash of the pattern and of each window of text using a rolling hash, which updates in O(1) when the window slides. If the hashes match, it double-checks the actual characters (to rule out a hash collision) before confirming a match.</p>
+          <ul>
+            <li><strong>Rolling hash:</strong> reuses the previous window's hash to compute the next one quickly</li>
+            <li><strong>Verification:</strong> a matching hash still triggers a direct character comparison</li>
+            <li><strong>Time:</strong> O(n + m) average, O(n·m) worst case (many collisions)</li>
+            <li><strong>Space:</strong> O(1)</li>
+          </ul>
+        </details>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    Smart Document Search — a string-matching mini project
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
