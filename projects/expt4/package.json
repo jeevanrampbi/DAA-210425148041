@@ -1,0 +1,13 @@
+{
+  "name": "aruns-route-finder",
+  "version": "1.0.0",
+  "description": "DAA Experiment 4 - Dijkstra's Shortest Path Algorithm demo (Arun's Route Finder)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
