@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyCity Connect</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <h1>MYCITY CONNECT</h1>
+    <p>Minimum-cost network planner</p>
+  </header>
+
+  <main class="layout">
+
+    <!-- ===== Map card ===== -->
+    <section class="card map-card">
+      <div class="card-title">Arun's City Map</div>
+
+      <div class="map" id="map">
+        <svg class="map-svg" id="mapSvg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+        <div class="map-markers" id="mapMarkers"></div>
+      </div>
+
+      <div id="selectedInfo" class="selected-info" hidden></div>
+
+      <button class="btn btn-primary btn-block" id="findBtn">Find Minimum Network</button>
+    </section>
+
+    <!-- ===== Results card ===== -->
+    <section class="card results-card">
+      <div class="card-title">Results</div>
+
+      <div id="resultsBody">
+        <div class="empty-state">
+          Click <strong>Find Minimum Network</strong> to compute the cheapest way to connect all five locations.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">MyCity Connect — DAA Experiment 3: Prim's &amp; Kruskal's MST</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
