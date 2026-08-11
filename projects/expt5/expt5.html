@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Min & Max Finder</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f2f2f2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:600px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px gray;
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:96%;
+    padding:10px;
+    margin-top:10px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    background:#007BFF;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.result{
+    margin-top:20px;
+    background:#f7f7f7;
+    padding:10px;
+    border-radius:5px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>Min & Max Finder</h2>
+
+<input
+id="numbers"
+value="82, 15, 4, 95, 36, 32, 29, 18, 95"
+placeholder="Enter numbers separated by commas">
+
+<button onclick="findMinMax()">
+Find Min & Max
+</button>
+
+<div class="result" id="output"></div>
+
+</div>
+
+<script>
+
+let comparisonCount=0;
+
+function minMaxDC(arr,low,high){
+
+    if(low==high)
+        return {min:arr[low],max:arr[low]};
+
+    if(high==low+1){
+
+        comparisonCount++;
+
+        if(arr[low]<arr[high])
+            return {min:arr[low],max:arr[high]};
+
+        return {min:arr[high],max:arr[low]};
+    }
+
+    let mid=Math.floor((low+high)/2);
+
+    let left=minMaxDC(arr,low,mid);
+    let right=minMaxDC(arr,mid+1,high);
+
+    comparisonCount++;
+    let mn=left.min<right.min?left.min:right.min;
+
+    comparisonCount++;
+    let mx=left.max>right.max?left.max:right.max;
+
+    return {min:mn,max:mx};
+
+}
+
+function minMaxNaive(arr){
+
+    let mn=arr[0];
+    let mx=arr[0];
+    let comps=0;
+
+    for(let i=1;i<arr.length;i++){
+
+        comps++;
+
+        if(arr[i]<mn)
+            mn=arr[i];
+
+        comps++;
+
+        if(arr[i]>mx)
+            mx=arr[i];
+
+    }
+
+    return {min:mn,max:mx,comparisons:comps};
+
+}
+
+function findMinMax(){
+
+    let arr=document.getElementById("numbers")
+            .value
+            .split(",")
+            .map(Number);
+
+    comparisonCount=0;
+
+    let dc=minMaxDC(arr,0,arr.length-1);
+
+    let dcComp=comparisonCount;
+
+    let naive=minMaxNaive(arr);
+
+    document.getElementById("output").innerHTML=
+    "<h3>Results</h3>"+
+
+    "<b>Minimum :</b> "+dc.min+"<br>"+
+    "<b>Maximum :</b> "+dc.max+"<br><br>"+
+
+    "<b>Divide & Conquer Comparisons :</b> "+dcComp+"<br>"+
+    "<b>Naive Comparisons :</b> "+naive.comparisons;
+
+}
+
+</script>
+
+</body>
+</html>
