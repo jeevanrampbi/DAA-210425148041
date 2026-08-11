@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arun's Route Finder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark">AR</span>
+        <div>
+          <h1>Arun's Route Finder</h1>
+          <p class="subtitle">DAA Experiment 4 &mdash; Dijkstra's Shortest Path Algorithm</p>
+        </div>
+      </div>
+      <span class="badge">Algorithm: Dijkstra</span>
+    </header>
+
+    <main class="layout">
+
+      <!-- Left column: controls + results -->
+      <section class="panel controls-panel">
+        <div class="card">
+          <h2>Plan a route</h2>
+          <p class="card-hint">Choose where Arun is starting from and where he needs to go.</p>
+
+          <form id="route-form">
+            <label for="from-select">From</label>
+            <select id="from-select" name="from" required>
+              <option value="" disabled selected>Select a location</option>
+            </select>
+
+            <label for="to-select">To</label>
+            <select id="to-select" name="to" required>
+              <option value="" disabled selected>Select a location</option>
+            </select>
+
+            <div class="form-actions">
+              <button type="submit" id="find-btn" class="btn btn-primary">Find Shortest Route</button>
+              <button type="button" id="reset-btn" class="btn btn-ghost">Reset Route</button>
+            </div>
+          </form>
+
+          <p id="form-message" class="form-message" role="alert"></p>
+        </div>
+
+        <div class="card results-card" id="results-card" hidden>
+          <h2>Shortest route</h2>
+
+          <div class="result-sequence" id="result-sequence"></div>
+
+          <div class="stat-grid">
+            <div class="stat">
+              <span class="stat-label">Distance</span>
+              <span class="stat-value" id="stat-distance">&mdash;</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Stops</span>
+              <span class="stat-value" id="stat-stops">&mdash;</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Algorithm</span>
+              <span class="stat-value stat-value-small" id="stat-algorithm">Dijkstra</span>
+            </div>
+          </div>
+
+          <h3 class="roads-heading">Roads used</h3>
+          <ul class="roads-list" id="roads-list"></ul>
+        </div>
+      </section>
+
+      <!-- Right column: SVG city map -->
+      <section class="panel map-panel">
+        <div class="card map-card">
+          <h2>City map</h2>
+          <p class="card-hint">Click a location to set it as From, then click another to set it as To. Hover to preview.</p>
+          <div class="map-wrapper">
+            <svg id="city-map" viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="City map of Arun's locations">
+              <!-- roads and nodes are drawn here by script.js -->
+            </svg>
+          </div>
+          <div class="legend">
+            <span class="legend-item"><span class="legend-swatch legend-road"></span>Road</span>
+            <span class="legend-item"><span class="legend-swatch legend-route"></span>Shortest route</span>
+            <span class="legend-item"><span class="legend-swatch legend-node"></span>Location</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="app-footer">
+      Built with Node.js, Express &amp; vanilla JavaScript &mdash; no maps API, no database.
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
