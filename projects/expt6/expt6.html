@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Matrix Chain Optimizer</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f2f2f2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:650px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px gray;
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:96%;
+    padding:10px;
+    margin-top:10px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    background:#007BFF;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.result{
+    margin-top:20px;
+    background:#f7f7f7;
+    padding:10px;
+    border-radius:5px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+table,th,td{
+    border:1px solid #ccc;
+}
+
+th,td{
+    padding:8px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Matrix Chain Optimizer</h2>
+
+<input id="dims" value="15,35,25,40,12"
+placeholder="Enter matrix dimensions">
+
+<button onclick="optimize()">Optimize</button>
+
+<div class="result" id="output"></div>
+
+</div>
+
+<script>
+
+function matrixChainOrder(dims){
+
+    let n=dims.length-1;
+
+    let m=Array.from({length:n+1},()=>Array(n+1).fill(0));
+    let s=Array.from({length:n+1},()=>Array(n+1).fill(0));
+
+    for(let l=2;l<=n;l++){
+
+        for(let i=1;i<=n-l+1;i++){
+
+            let j=i+l-1;
+
+            m[i][j]=Infinity;
+
+            for(let k=i;k<j;k++){
+
+                let cost=
+                m[i][k]+
+                m[k+1][j]+
+                dims[i-1]*dims[k]*dims[j];
+
+                if(cost<m[i][j]){
+                    m[i][j]=cost;
+                    s[i][j]=k;
+                }
+
+            }
+
+        }
+
+    }
+
+    return {m,s,n};
+
+}
+
+function printParens(s,i,j){
+
+    if(i==j)
+        return "A"+i;
+
+    let k=s[i][j];
+
+    return "("+
+    printParens(s,i,k)+
+    " × "+
+    printParens(s,k+1,j)+
+    ")";
+
+}
+
+function optimize(){
+
+    let dims=document.getElementById("dims")
+    .value
+    .split(",")
+    .map(Number);
+
+    let result=matrixChainOrder(dims);
+
+    let html="";
+
+    html+="<b>Minimum Scalar Multiplications:</b> "
+    +result.m[1][result.n]+"<br><br>";
+
+    html+="<b>Optimal Parenthesization:</b><br>";
+    html+=printParens(result.s,1,result.n);
+
+    html+="<br><br>";
+
+    html+="<table>";
+    html+="<tr><th></th>";
+
+    for(let i=1;i<=result.n;i++)
+        html+="<th>A"+i+"</th>";
+
+    html+="</tr>";
+
+    for(let i=1;i<=result.n;i++){
+
+        html+="<tr>";
+        html+="<th>A"+i+"</th>";
+
+        for(let j=1;j<=result.n;j++){
+
+            if(j<i)
+                html+="<td>--</td>";
+            else
+                html+="<td>"+result.m[i][j]+"</td>";
+
+        }
+
+        html+="</tr>";
+
+    }
+
+    html+="</table>";
+
+    document.getElementById("output").innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>
